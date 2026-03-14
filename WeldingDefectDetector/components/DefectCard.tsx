@@ -1,126 +1,63 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Defect, DefectSeverity } from '../types/analysis';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { Defect } from "../types/analysis";
 
 interface DefectCardProps {
   defect: Defect;
 }
 
 const DEFECT_COLORS: Record<string, string> = {
-  Porosity: '#ff6b6b',
-  Cracks: '#ff3333',
-  'Incomplete Fusion': '#ffa500',
-  Undercut: '#ffcc00',
-  Spatter: '#ff9500',
+  Porosity: "#ff6b6b",
+  Crack: "#ff3333",
+  Spatters: "#ff9500",
+  Undercut: "#ffcc00",
+  Overlap: "#ffa500",
+  "Burn-through": "#ff0000",
+  "Excess Reinforcement": "#ffaa00",
 };
 
 export default function DefectCard({ defect }: DefectCardProps) {
-  const defectColor = DEFECT_COLORS[defect.type] || '#ff6b6b';
-
-  const getSeverityLabel = (severity: DefectSeverity): string => {
-    if (severity === 'Critical') return '⚠️ CRITICAL';
-    if (severity === 'High') return '⚠ HIGH';
-    if (severity === 'Medium') return '⚡ MEDIUM';
-    return '• LOW';
-  };
+  const color = DEFECT_COLORS[defect.type] || "#ff6b6b";
 
   return (
-    <View style={[styles.card, { borderColor: defectColor }]}>
-      <View style={styles.header}>
-        <Text style={[styles.type, { color: defectColor }]}>{defect.type}</Text>
-        <Text style={[styles.severity, { color: defectColor }]}>
-          {getSeverityLabel(defect.severity)}
-        </Text>
-      </View>
-
-      <Text style={styles.description}>{defect.description}</Text>
-
-      <View style={styles.footer}>
-        <View style={styles.confidenceContainer}>
-          <Text style={styles.confidenceLabel}>Confidence</Text>
-          <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${defect.confidence}%`, backgroundColor: defectColor },
-              ]}
-            />
-          </View>
-          <Text style={styles.confidenceValue}>{defect.confidence}%</Text>
-        </View>
-
-        {defect.location && (
-          <View style={styles.location}>
-            <Text style={styles.locationLabel}>📍 {defect.location}</Text>
-          </View>
-        )}
-      </View>
+    <View style={[styles.card, { borderColor: color }]}>
+      <Text style={[styles.type, { color }]}>{defect.type}</Text>
+      <Text style={styles.confidence}>Confidence: {defect.confidence}%</Text>
+      {defect.description && (
+        <Text style={styles.description}>{defect.description}</Text>
+      )}
+      {defect.recommendation && (
+        <Text style={styles.recommendation}>{defect.recommendation}</Text>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: "#2a2a2a",
     borderRadius: 15,
-    padding: 15,
-    marginBottom: 15,
+    padding: 16,
+    marginBottom: 12,
     borderWidth: 2,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   type: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 6,
   },
-  severity: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    letterSpacing: 1,
+  confidence: {
+    fontSize: 14,
+    color: "#e0e0e0",
   },
   description: {
-    fontSize: 14,
-    color: '#b0b0b0',
-    marginBottom: 15,
-    lineHeight: 20,
-  },
-  footer: {
-    gap: 12,
-  },
-  confidenceContainer: {
-    gap: 5,
-  },
-  confidenceLabel: {
     fontSize: 12,
-    color: '#808080',
-    textTransform: 'uppercase',
+    color: "#c0c0c0",
+    marginTop: 6,
   },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#1a1a1a',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  confidenceValue: {
+  recommendation: {
     fontSize: 12,
-    color: '#e0e0e0',
-    fontWeight: '600',
-  },
-  location: {
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: '#3a3a3a',
-  },
-  locationLabel: {
-    fontSize: 12,
-    color: '#a0a0a0',
+    color: "#a0e0a0",
+    marginTop: 4,
   },
 });

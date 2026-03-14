@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+torch
+torchvision
+ultralytics
+opencv-python
+pillow
+numpy
+pillow-heif
+reportlab
+motor 
+pymongo 
+passlib[bcrypt] 
+python-multipart
